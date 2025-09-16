@@ -36,14 +36,14 @@ import isaacsim.core.utils.prims as prim_utils
 import isaaclab.sim as sim_utils
 from isaaclab.utils.assets import ISAAC_NUCLEUS_DIR
 
-
+# 场景设计
 def design_scene():
     """Designs the scene by spawning ground plane, light, objects and meshes from usd files."""
-    # Ground-plane
+    # 生成地面 Ground-plane
     cfg_ground = sim_utils.GroundPlaneCfg()
     cfg_ground.func("/World/defaultGroundPlane", cfg_ground)
 
-    # spawn distant light
+    # 生成太阳光 spawn distant light
     cfg_light_distant = sim_utils.DistantLightCfg(
         intensity=3000.0,
         color=(0.75, 0.75, 0.75),
@@ -52,7 +52,8 @@ def design_scene():
 
     # create a new xform prim for all objects to be spawned under
     prim_utils.create_prim("/World/Objects", "Xform")
-    # spawn a red cone
+
+    # 生成红色圆锥 spawn a red cone
     cfg_cone = sim_utils.ConeCfg(
         radius=0.15,
         height=0.5,
@@ -61,7 +62,7 @@ def design_scene():
     cfg_cone.func("/World/Objects/Cone1", cfg_cone, translation=(-1.0, 1.0, 1.0))
     cfg_cone.func("/World/Objects/Cone2", cfg_cone, translation=(-1.0, -1.0, 1.0))
 
-    # spawn a green cone with colliders and rigid body
+    # 生成绿色圆锥 (碰撞体积 + 刚体) spawn a green cone with colliders and rigid body
     cfg_cone_rigid = sim_utils.ConeCfg(
         radius=0.15,
         height=0.5,
@@ -74,7 +75,7 @@ def design_scene():
         "/World/Objects/ConeRigid", cfg_cone_rigid, translation=(-0.2, 0.0, 2.0), orientation=(0.5, 0.0, 0.5, 0.0)
     )
 
-    # spawn a blue cuboid with deformable body
+    # 生成蓝色立方体 (柔性) spawn a blue cuboid with deformable body
     cfg_cuboid_deformable = sim_utils.MeshCuboidCfg(
         size=(0.2, 0.5, 0.2),
         deformable_props=sim_utils.DeformableBodyPropertiesCfg(),
@@ -83,7 +84,7 @@ def design_scene():
     )
     cfg_cuboid_deformable.func("/World/Objects/CuboidDeformable", cfg_cuboid_deformable, translation=(0.15, 0.0, 2.0))
 
-    # spawn a usd file of a table into the scene
+    # 生成桌子 (来自.usd 文件) spawn a usd file of a table into the scene
     cfg = sim_utils.UsdFileCfg(usd_path=f"{ISAAC_NUCLEUS_DIR}/Props/Mounts/SeattleLabTable/table_instanceable.usd")
     cfg.func("/World/Objects/Table", cfg, translation=(0.0, 0.0, 1.05))
 
@@ -95,7 +96,7 @@ def main():
     sim_cfg = sim_utils.SimulationCfg(dt=0.01, device=args_cli.device)
     sim = sim_utils.SimulationContext(sim_cfg)
     # Set main camera
-    sim.set_camera_view([2.0, 0.0, 2.5], [-0.5, 0.0, 0.5])
+    sim.set_camera_view((2.0, 0.0, 2.5), (-0.5, 0.0, 0.5))
     # Design scene
     design_scene()
     # Play the simulator

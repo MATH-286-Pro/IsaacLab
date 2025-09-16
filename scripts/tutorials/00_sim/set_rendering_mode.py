@@ -47,20 +47,20 @@ def main():
     # carb setting dictionary can include any rtx carb setting which will overwrite the native preset setting
     carb_settings = {"rtx.reflections.enabled": True}
 
-    # Initialize render config
+    # 初始化渲染设置
     render_cfg = sim_utils.RenderCfg(
         rendering_mode=rendering_mode,
         carb_settings=carb_settings,
     )
 
-    # Initialize the simulation context with render coofig
+    # 初始化仿真环境
     sim_cfg = sim_utils.SimulationCfg(render=render_cfg)
     sim = sim_utils.SimulationContext(sim_cfg)
 
-    # Pose camera in the hospital lobby area
+    # 设置相机
     sim.set_camera_view([-11, -0.5, 2], [0, 0, 0.5])
 
-    # Load hospital scene
+    # 加载医院场景  Load hospital scene
     hospital_usd_path = f"{ISAAC_NUCLEUS_DIR}/Environments/Hospital/hospital.usd"
     cfg = sim_utils.UsdFileCfg(usd_path=hospital_usd_path)
     cfg.func("/Scene", cfg)

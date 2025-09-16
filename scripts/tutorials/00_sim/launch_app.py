@@ -20,16 +20,12 @@ import argparse
 
 from isaaclab.app import AppLauncher
 
-# create argparser
-parser = argparse.ArgumentParser(description="Tutorial on running IsaacSim via the AppLauncher.")
-parser.add_argument("--size", type=float, default=1.0, help="Side-length of cuboid")
+# 创建 argparser 参数解析器
 # SimulationApp arguments https://docs.omniverse.nvidia.com/py/isaacsim/source/isaacsim.simulation_app/docs/index.html?highlight=simulationapp#isaacsim.simulation_app.SimulationApp
-parser.add_argument(
-    "--width", type=int, default=1280, help="Width of the viewport and generated images. Defaults to 1280"
-)
-parser.add_argument(
-    "--height", type=int, default=720, help="Height of the viewport and generated images. Defaults to 720"
-)
+parser = argparse.ArgumentParser(description="Tutorial on running IsaacSim via the AppLauncher.")
+parser.add_argument("--size",   type=float, default=1.0,   help="Side-length of cuboid")
+parser.add_argument("--width",  type=int,   default=1280,  help="Width of the viewport and generated images. Defaults to 1280")
+parser.add_argument("--height", type=int,   default=720,   help="Height of the viewport and generated images. Defaults to 720")
 
 # append AppLauncher cli args
 AppLauncher.add_app_launcher_args(parser)
@@ -44,20 +40,22 @@ simulation_app = app_launcher.app
 import isaaclab.sim as sim_utils
 
 
+# 场景设置
 def design_scene():
     """Designs the scene by spawning ground plane, light, objects and meshes from usd files."""
-    # Ground-plane
+
+    # 生成地面 spawn ground plane
     cfg_ground = sim_utils.GroundPlaneCfg()
     cfg_ground.func("/World/defaultGroundPlane", cfg_ground)
 
-    # spawn distant light
+    # 生成太阳光源 spawn distant light
     cfg_light_distant = sim_utils.DistantLightCfg(
         intensity=3000.0,
         color=(0.75, 0.75, 0.75),
     )
     cfg_light_distant.func("/World/lightDistant", cfg_light_distant, translation=(1, 0, 10))
 
-    # spawn a cuboid
+    # 生成立方体 spawn a cuboid
     cfg_cuboid = sim_utils.CuboidCfg(
         size=[args_cli.size] * 3,
         visual_material=sim_utils.PreviewSurfaceCfg(diffuse_color=(1.0, 1.0, 1.0)),
